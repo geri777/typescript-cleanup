@@ -174,7 +174,7 @@ var tscu;
 		var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
 		if(fileName.substr(-(".js.map").length)=='.js.map') {
 			fname = fileName.substr(0, fileName.length - (".js.map").length);
-			if (_fileExists(fname + ".js") && !_fileExists(fname.substr(0, fname.length - 3) + '.min.js') && !_fileExists(fname + '.ts')) {
+			if (_fileExists(fname + ".js") && !_fileExists(fname.substr(0, fname.length - 4) + '.min.js') && !_fileExists(fname.substr(0, fname.length - 4) + '.src.js') && !_fileExists(fname + '.ts')) {
 				console.log("Orphaned:", fname + '.js');
 				return true;
 			}
