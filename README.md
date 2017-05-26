@@ -8,4 +8,4 @@ This fork adds the following feature(s):
 
 # Installation / Run
 Copy the file "tsc-cleanup" into the root of your project. There must be a valid tsconfig.json in this folder as well.
-The open command line and run "node ts-cleanup"
+Then open command line and run "node ts-cleanup".
