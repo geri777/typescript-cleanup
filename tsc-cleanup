@@ -9,13 +9,12 @@ var tscu;
         var configFile = _findConfigFile();
         var jsonText   = fs.readFileSync(configFile, 'utf8');
         var config     = _parseConfigFileTextToJson(jsonText);
-
         var excludeList = config.exclude;
         
         var fileList = _getTSfileList(_getCurrentDirectory(), excludeList);
         
         var removedList = _removeCompiled(fileList);
-        console.log(removedList);
+		console.log("Cleaned items:", removedList);
     }
     tscu.cleanup = cleanup;
 
@@ -86,7 +85,7 @@ var tscu;
         
         return removedFileList;
     }
-
+	
     function _fileExists(filePath) {
         try {
             fs.accessSync(filePath, fs.F_OK);
@@ -161,14 +160,24 @@ var tscu;
     
     function _isValidTSfile(fileName, excludeList) {
         var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
-        
-        if (ext !== 'ts') {
+		if(_isOrphaned(fileName) && ext == 'map') {
+			// we put this in the valid list to remove .js/.map
+		} else if (ext !== 'ts') {
             return false;
         }
-        
         var isInExcludeList = _isInExcludeList(fileName, excludeList);
         return !isInExcludeList;
     }
+	
+	function _isOrphaned(fileName) {
+		var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
+		var fname = fileName.substr(0, fileName.lastIndexOf('.'));
+		if (ext == 'map' && _fileExists(fname + '.js') && !_fileExists(fname.substr(0, fname.length - 4) + '.min.js') && !_fileExists(fname + '.ts')) {
+			return true;
+		} else {
+			return false;
+		}
+	}
     
     function _isInExcludeList(fileName, excludeList) {
         var isInExcludeList = false;
